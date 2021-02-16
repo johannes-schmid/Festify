@@ -20,22 +20,30 @@ class Crawler:
         }
     #Creating run call that crawles websites
     def run(self):
+        # Reading csv file
+        df = pd.read_csv('data/changes.csv')
+        df.set_index('Event', inplace=True)
         for event in self.events:
             eventWebsite = self.websites[event]
             eventElement = self.htmlElements[event]
             # Sending request to get all page information
             x = requests.get(eventWebsite)
             # Converting it into a readable html page and stripping all un-necessary elements
-            x = str(BeautifulSoup(x.text, 'html.parser').find_all(class_=eventElement))
+            x = str(BeautifulSoup(x.text, 'html.parser').find(class_=eventElement))
             # Open connection to new file
-            f = str(BeautifulSoup(open('data/' + event + '.html'), 'html.parser'))
-            if x == f:
-                print('There is no changes my friends!')
+            f = open('data/' + event + '.html')
+            fileContent = f.read()
+            f.close()
+            if x == fileContent:
+                print('There are no changes my friends!')
             else:
-                # Reading csv file
-                df = pd.read_csv('data/changes.csv')
+                f = open('data/' + event + '.html', 'w')
+                f.write(x)
+                f.close()
                 # Changing cell with last changed date
-                if df.loc[event, 'last change']:
+                if event in df.index:
                     df.loc[event, 'last change'] = str(datetime.datetime.now())
                 else:
                     df = df.append([event], str(datetime.datetime.now()))
+
+            df.to_csv('data/changes.csv')
