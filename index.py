@@ -1,4 +1,4 @@
 from Crawler import Crawler
 
-festify = Crawler()
-festify.run()
+crawler = Crawler()
+crawler.run()
