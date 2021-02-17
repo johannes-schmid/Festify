@@ -5,45 +5,57 @@ from bs4 import BeautifulSoup
 import datetime
 import pandas as pd
 
+
 # Creating Crawler Class
 class Crawler:
+
     events = ['Dekmantel', 'Sonar']
+
     # Creating object that contains all websites
     websites = {
         'Dekmantel': 'https://www.dekmantelfestival.com/en/tickets/',
         'Sonar': 'https://sonar.es/es/2021/tickets'
     }
+
     # Elements that need to be tracked
-    htmlElements = {
+    htmlElementClasses = {
         'Dekmantel': 'tickets',
         'Sonar': 'main-container sm-full-width page_tickets lg-margin-top'
-        }
-    #Creating run call that crawles websites
+    }
+
+    # Creating run call that crawls websites
     def run(self):
         # Reading csv file
-        df = pd.read_csv('data/changes.csv')
-        df.set_index('Event', inplace=True)
+        df = pd.read_csv('data/changes.csv', index_col='Event')
+
         for event in self.events:
-            eventWebsite = self.websites[event]
-            eventElement = self.htmlElements[event]
+
+            website = self.websites[event]
+            classname = self.htmlElementClasses[event]
+
             # Sending request to get all page information
-            x = requests.get(eventWebsite)
+            html = requests.get(website)
             # Converting it into a readable html page and stripping all un-necessary elements
-            x = str(BeautifulSoup(x.text, 'html.parser').find(class_=eventElement))
-            # Open connection to new file
+            newContent = BeautifulSoup(html.text, 'html.parser').find(class_=classname).prettify()
+
+            # Read current file content (we assume it always exists)
             f = open('data/' + event + '.html')
             fileContent = f.read()
             f.close()
-            if x == fileContent:
+
+            if newContent == fileContent:
                 print('There are no changes my friends!')
             else:
+                # Write new HTML to the file
                 f = open('data/' + event + '.html', 'w')
-                f.write(x)
+                f.write(newContent)
                 f.close()
+
                 # Changing cell with last changed date
                 if event in df.index:
-                    df.loc[event, 'last change'] = str(datetime.datetime.now())
+                    df.at[event, 'Last change'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 else:
-                    df = df.append([event], str(datetime.datetime.now()))
+                    df.loc[event] = [datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
 
-            df.to_csv('data/changes.csv')
+        # When the loop is over save all changes to csv
+        df.to_csv('data/changes.csv')
