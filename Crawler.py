@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 import datetime
 import pandas as pd
 
+from Notifier import Notifier
+
 
 # Creating Crawler Class
 class Crawler:
@@ -27,6 +29,8 @@ class Crawler:
     def run(self):
         # Reading csv file
         df = pd.read_csv('data/changes.csv', index_col='Event')
+        #Creating notifier
+        Notfiy = Notifier()
 
         for event in self.events:
 
@@ -50,7 +54,8 @@ class Crawler:
                 f = open('data/' + event + '.html', 'w')
                 f.write(newContent)
                 f.close()
-
+                e_mail_message = f'Subject: Festival News!\n \nThere is a new change for the Event {event}, check of the website for tickets!'
+                Notfiy.notify(e_mail_message)
                 # Changing cell with last changed date
                 if event in df.index:
                     df.at[event, 'Last change'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -59,3 +64,5 @@ class Crawler:
 
         # When the loop is over save all changes to csv
         df.to_csv('data/changes.csv')
+
+
