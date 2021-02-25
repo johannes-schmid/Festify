@@ -29,7 +29,7 @@ class Crawler:
     def run(self):
         # Reading csv file
         df = pd.read_csv('data/changes.csv', index_col='Event')
-        #Creating notifier
+        # Creating notifier
         notifier = Notifier()
 
         for event in self.events:
