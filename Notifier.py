@@ -12,9 +12,9 @@ class Notifier:
         'hannesxo': 'hannes322@yahoo.de'
     }
     # Creating messages container
-    e_mail = MIMEMultipart('alternative')
+
     sender_email = 'festify.alerts@gmail.com'
-    e_mail['From'] = sender_email
+
     server = None
 
     def __init__(self):
@@ -26,7 +26,9 @@ class Notifier:
 
     def notify(self, event):
         # creating e-mail message
-        self.e_mail['Subject'] = 'Festival News!'
+        e_mail = MIMEMultipart('alternative')
+        e_mail['From'] = self.sender_email
+        e_mail['Subject'] = 'Festival News!'
         text = 'Hi!Some news! An event you have subscribed for has changed!'
         html = """<html>
             <head>
@@ -43,12 +45,12 @@ class Notifier:
         # Convert the multiline string into MIMETYPE HTML
         plain = MIMEText(text, 'plain')
         html = MIMEText(html, 'html')
-        self.e_mail.attach(plain)
-        self.e_mail.attach(html)
+        e_mail.attach(plain)
+        e_mail.attach(html)
 
 
         for subscriber in self.subscribers:
-            self.e_mail['To'] = self.subscribers[subscriber]
-            self.server.send_message(self.e_mail)
+            e_mail['To'] = self.subscribers[subscriber]
+            self.server.send_message(e_mail)
 
 
