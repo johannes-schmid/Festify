@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import datetime
 import pandas as pd
 
-from Notifier import Notifier
+from src.services.Notifier import Notifier
 
 
 # Creating Crawler Class
@@ -43,17 +43,15 @@ class Crawler:
             newContent = BeautifulSoup(html.text, 'html.parser').find(class_=classname).prettify()
 
             # Read current file content (we assume it always exists)
-            f = open('data/' + event + '.html')
-            fileContent = f.read()
-            f.close()
+            with open('data/' + event + '.html') as f:
+                fileContent = f.read()
 
             if newContent == fileContent:
                 print('There are no changes my friends!')
             else:
                 # Write new HTML to the file
-                f = open('data/' + event + '.html', 'w')
-                f.write(newContent)
-                f.close()
+                with open('data/' + event + '.html', 'w') as f:
+                    f.write(newContent)
 
                 notifier.notify(event)
                 # Changing cell with last changed date
