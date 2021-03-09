@@ -28,7 +28,7 @@ class Crawler:
     # Creating run call that crawls websites
     def run(self):
         # Reading csv file
-        df = pd.read_csv('data/changes.csv', index_col='Event')
+        df = pd.read_csv('../data/changes.csv', index_col='Event')
         # Creating notifier
         notifier = Notifier()
 
@@ -43,14 +43,14 @@ class Crawler:
             newContent = BeautifulSoup(html.text, 'html.parser').find(class_=classname).prettify()
 
             # Read current file content (we assume it always exists)
-            with open('data/' + event + '.html') as f:
+            with open('../data/' + event + '.html') as f:
                 fileContent = f.read()
 
             if newContent == fileContent:
                 print('There are no changes my friends!')
             else:
                 # Write new HTML to the file
-                with open('data/' + event + '.html', 'w') as f:
+                with open('../data/' + event + '.html', 'w') as f:
                     f.write(newContent)
 
                 notifier.notify(event)
@@ -61,6 +61,6 @@ class Crawler:
                     df.loc[event] = [datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
 
         # When the loop is over save all changes to csv
-        df.to_csv('data/changes.csv')
+        df.to_csv('../data/changes.csv')
 
 

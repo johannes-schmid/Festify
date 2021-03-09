@@ -65,7 +65,6 @@ class Notifier:
         htmlTable = df.to_html()
         dfstring = df.to_string()
         text = dfstring
-        print(htmlTable)
 
         # Convert the multiline string into MIMETYPE HTML
         plain = MIMEText(text, 'plain')
