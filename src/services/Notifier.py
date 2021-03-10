@@ -1,6 +1,6 @@
 import os
 import smtplib
-
+import pandas as pd
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -49,8 +49,26 @@ class Notifier:
         e_mail.attach(html)
 
 
-        for subscriber in self.subscribers:
-            e_mail['To'] = self.subscribers[subscriber]
+        for subscriber, address in self.subscribers.items():
+            e_mail['To'] = address
             self.server.send_message(e_mail)
 
+    def sendSummary(self, email):
+        e_mail = MIMEMultipart('alternative')
+        e_mail['To'] = email
+        e_mail['From'] = self.sender_email
+        e_mail['Subject'] = 'Here is your Summary'
+
+        # Reading content from csv file
+        df = pd.read_csv('data/changes.csv')
+        df = df.sort_values(by=['last change'])
+        htmlTable = df.to_html()
+        text = df.to_string()
+
+        # Convert the multiline string into MIMETYPE HTML
+        plain = MIMEText(text, 'plain')
+        html = MIMEText(htmlTable, 'html')
+        e_mail.attach(plain)
+        e_mail.attach(html)
+        self.server.send_message(e_mail)
 
