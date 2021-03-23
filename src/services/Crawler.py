@@ -36,6 +36,7 @@ class Crawler:
 
             website = self.websites[event]
             classname = self.htmlElementClasses[event]
+            changedEvents = []
 
             # Sending request to get all page information
             html = requests.get(website)
@@ -53,13 +54,13 @@ class Crawler:
                 with open('../data/' + event + '.html', 'w') as f:
                     f.write(newContent)
 
-                notifier.notify(event)
+                changedEvents.append(event)
                 # Changing cell with last changed date
                 if event in df.index:
                     df.at[event, 'Last change'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 else:
                     df.loc[event] = [datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
-
+        notifier.notify(changedEvents)
         # When the loop is over save all changes to csv
         df.to_csv('../data/changes.csv')
 

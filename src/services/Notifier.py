@@ -3,14 +3,12 @@ import smtplib
 import pandas as pd
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from src.services.SubscriptionManager import SubscriptionManager
 
 
 class Notifier:
     # Hardcoded email address to test notifier
-    subscribers = {
-        'Johannes': 'schmid.johannes90@gmail.com',
-        'hannesxo': 'hannes322@yahoo.de'
-    }
+    subscribers = SubscriptionManager.getSubscribers()
     # Creating messages container
 
     sender_email = 'festify.alerts@gmail.com'
