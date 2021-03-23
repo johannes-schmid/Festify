@@ -5,7 +5,7 @@ class SubscriptionManager:
 
     def getSubscribers(self):
         subscribers = pd.read_csv('../../data/users.csv')
-        return subscribers['e-mail']
+        return subscribers
 
     def subscribe(self,firstname, lastname, email):
         subscribers = pd.read_csv('../../data/users.csv', index_col=False)
@@ -15,12 +15,6 @@ class SubscriptionManager:
 
     def unsubscribe(self,mail):
         subscribers = pd.read_csv('../../data/users.csv', index_col='e-mail')
-        #removerow = subscribers.loc[mail]
-        subscribers.drop(index=mail)
+        subscribers.drop(index=mail, inplace=True)
         subscribers.to_csv('../../data/users.csv')
 
-
-
-test = SubscriptionManager()
-
-test.unsubscribe('hannes322@yahoo.de')

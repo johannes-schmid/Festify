@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-
+from src.services.SubscriptionManager import SubscriptionManager
 app = Flask(__name__)
 
 changed_events = [
@@ -15,7 +15,8 @@ changed_events = [
     }
 ]
 
-
+test = SubscriptionManager()
+test.subscribe('Hubi','Hansi','hansi@hansi.de')
 
 
 @app.route('/')
