@@ -8,7 +8,8 @@ from src.services.SubscriptionManager import SubscriptionManager
 
 class Notifier:
     # Hardcoded email address to test notifier
-    subscribers = SubscriptionManager.getSubscribers()
+    subMan = SubscriptionManager()
+    subscribers = subMan.getSubscribers()
     # Creating messages container
 
     sender_email = 'festify.alerts@gmail.com'

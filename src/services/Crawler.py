@@ -1,15 +1,33 @@
 import requests
+import os
 # This is needed to search in the html response specific elements
 from bs4 import BeautifulSoup
 # Date time module to track stamp current time
 import datetime
 import pandas as pd
-
+from google.cloud import datastore
 from src.services.Notifier import Notifier
 
+os.environ["DATASTORE_DATASET"] = "test"
+os.environ["DATASTORE_EMULATOR_HOST"] = "localhost:8081"
+os.environ["DATASTORE_EMULATOR_HOST_PATH"] = "localhost:8081/datastore"
+os.environ["DATASTORE_HOST"] = "http://localhost:8081"
+os.environ["DATASTORE_PROJECT_ID"] = "test"
 
+datastore_client = datastore.Client()
 # Creating Crawler Class
 class Crawler:
+
+    def store_events(self, id, name, elementClass, htmlContent, lastChange):
+        events = datastore.Entity(key=datastore_client.key('events'))
+        events.update({
+            'id': id,
+            'Eventname': name,
+            'htmlClass': elementClass,
+            'Content': htmlContent,
+            'Last update': lastChange,
+        })
+        datastore_client.put(events)
 
     events = ['Dekmantel', 'Sonar']
 
@@ -31,12 +49,12 @@ class Crawler:
         df = pd.read_csv('../data/changes.csv', index_col='Event')
         # Creating notifier
         notifier = Notifier()
-
+        changedEvents = []
         for event in self.events:
 
             website = self.websites[event]
             classname = self.htmlElementClasses[event]
-            changedEvents = []
+
 
             # Sending request to get all page information
             html = requests.get(website)
@@ -60,6 +78,7 @@ class Crawler:
                     df.at[event, 'Last change'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 else:
                     df.loc[event] = [datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
+
         notifier.notify(changedEvents)
         # When the loop is over save all changes to csv
         df.to_csv('../data/changes.csv')
