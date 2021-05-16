@@ -1,20 +1,34 @@
 import pandas as pd
+from google.cloud import datastore
 
+datastore_client = datastore.Client()
 
 class SubscriptionManager:
 
+
     def getSubscribers(self):
-        subscribers = pd.read_csv('../../data/users.csv')
-        return subscribers
+        subscribers = datastore_client.query(kind='users').fetch()
+        return list(subscribers)
 
     def subscribe(self,firstname, lastname, email):
-        subscribers = pd.read_csv('../../data/users.csv', index_col=False)
-        newSubscriber = {'firstname':firstname,'lastname': lastname, 'e-mail': email}
-        subscribers.append(newSubscriber, ignore_index=True, sort=True)
-        subscribers.to_csv('../../data/users.csv')
+        user = datastore.Entity(key=datastore_client.key('users'))
+        user.update({
+            'firstname': firstname,
+            'lastname': lastname,
+            'email': email
+        })
+        query = datastore_client.query(kind='users')
+        existinguser = query.add_filter('email', '=', email).fetch(limit =1)
 
-    def unsubscribe(self,mail):
-        subscribers = pd.read_csv('../../data/users.csv', index_col='e-mail')
-        subscribers.drop(index=mail, inplace=True)
-        subscribers.to_csv('../../data/users.csv')
+        if len(list(existinguser)) > 0:
+            print('This user is already subscribed to this mailing list')
+            return
 
+        datastore_client.put(user)
+
+    def unsubscribe(self, mail):
+        subscribers = datastore_client.query(kind='users')
+        deleteuser = subscribers.add_filter('email', '=', mail).fetch(limit=1)
+        user = list(deleteuser)[0]
+
+        datastore_client.delete(user.key)
