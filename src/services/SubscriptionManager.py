@@ -32,8 +32,3 @@ class SubscriptionManager:
         user = list(deleteuser)[0]
 
         datastore_client.delete(user.key)
-
-
-#test = SubscriptionManager()
-#test.subscribe('hansi','kansi', 'hansi@hansi.de')
-#test.unsubscribe('hansi@hansi.de')
