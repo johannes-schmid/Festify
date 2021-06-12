@@ -1,0 +1,23 @@
+button#updateme {
+margin-top: 180px;
+}
+
+h1#title{
+margin-top:24px;
+}
+
+
+.container {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+#test {
+background-color: red;
+}
+
+
+
+.navbar {
+padding: 4.5rem 0rem;
+}

@@ -21,8 +21,7 @@ class SubscriptionManager:
         existinguser = query.add_filter('email', '=', email).fetch(limit =1)
 
         if len(list(existinguser)) > 0:
-            print('This user is already subscribed to this mailing list')
-            return
+            raise Exception ('This user has already subscribed to this mailing list')
 
         datastore_client.put(user)
 

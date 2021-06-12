@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-5">
+            <h1>Failed!</h1>
+            <p>Something went wrong when signing you up!</p>
+            <a href={{ url_for('subscribe') }}><button type="button"  id='tryagain' class="btn btn-lg btn-primary btn-dark">Try again -></button></a>
+        </div>
+        <div class="col-7">
+            <img src="../static/images/failed.png" class="float-right">
+        </div>
+    </div>
+</div>
+{% endblock %}

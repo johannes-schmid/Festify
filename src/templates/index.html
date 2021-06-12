@@ -1,3 +1,28 @@
-<html>
-    <h1> Hihihihihih hhohohoh </h1>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <a href={{ url_for('subscribe') }}><button type="button"  id='updateme' class="btn btn-lg btn-primary btn-dark">Update Me -></button></a>
+      <h1 id="title"> Festify</h1>
+      <p>Never miss a festival ticket sale.<br></p>
+      <p>Never miss the time of your life.</p>
+      <h5>30.05.2021</h5>
+      <p>Last update check</p>
+    </div>
+    <div class="col-2">
+      <img src="../static/images/Awakenings.png">
+      <p>Last update: <br> 05.05.2021</p>
+    </div>
+    <div class="col-2">
+      <img src="../static/images/Dekmantel.png">
+      <p>Last change: <br> {{events[46].lastChange}}</p>
+    </div>
+    <div class="col-2">
+      <img src="../static/images/Sonar.png">
+      <p>Last change: <br> {{events[47].lastChange}}</p>
+    <div class="col-6"><img src="../static/images/getupdated.png" class="float-right"></div>
+    </div>
+
+  </div>
+{% endblock %}

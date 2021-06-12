@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Get updated</h1>
+    <p>Get the newst Festival news right into your inbox, for free. As soon as something changes, you will be notfied.</p>
+    <div class="row">
+        <div class="col-5">
+
+            <form action="{{ url_for('success') }}" method="post">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Email address*</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required="true" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">Enter the email where the ticket updates should be send to!</small>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Firstname</label>
+                <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Firstname">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Lastname</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname">
+              </div>
+                <button type="submit" class="btn btn-lg btn-primary btn-dark">Sign me up -></button>
+            </form>
+        </div>
+        <div class="col-7">
+            <img src="../static/images/getupdated.png" class="float-right">
+        </div>
+</div>
+{% endblock %}
