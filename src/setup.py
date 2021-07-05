@@ -22,6 +22,7 @@ events = [{
     'elementClass': 'tickets',
     'htmlContent': '',
     'lastChange': datetime.datetime.now(),
+    'image': 'src/static/images/Dekmantel.png',
 },
     {
     'name': 'Sonar',
@@ -29,6 +30,15 @@ events = [{
     'elementClass': 'main-container sm-full-width page_tickets lg-margin-top',
     'htmlContent': '',
     'lastChange': datetime.datetime.now(),
+    'image': 'src/static/images/Sonar.png',
+    }
+,   {
+    'name': 'Awakenings',
+    'website': 'https://sonar.es/es/2022/tickets',
+    'elementClass': 'main-container sm-full-width page_tickets lg-margin-top',
+    'htmlContent': '',
+    'lastChange': datetime.datetime.now(),
+    'image': '/src/static/images/Awakenings.png',
     }
 
 ]

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-5">
+            <h1>Successful!</h1>
+            <p>You have sucessfully signed up for festival news with {{ email }} !</p>
+            <a href={{ url_for('index') }}><button type="button"  id='done' class="btn btn-lg btn-primary btn-dark">Done -></button></a>
+        </div>
+        <div class="col-7">
+            <img src="../static/images/success.png" class="float-right">
+        </div>
+    </div>
+{% endblock %}
