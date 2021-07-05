@@ -10,19 +10,13 @@
       <h5>30.05.2021</h5>
       <p>Last update check</p>
     </div>
+    {% for event in events %}
     <div class="col-2">
-      <img src="../static/images/Awakenings.png">
-      <p>Last update: <br> 05.05.2021</p>
-    </div>
-    <div class="col-2">
-      <img src="../static/images/Dekmantel.png">
-      <p>Last change: <br> {{events[46].lastChange}}</p>
-    </div>
-    <div class="col-2">
-      <img src="../static/images/Sonar.png">
-      <p>Last change: <br> {{events[47].lastChange}}</p>
+      <img src={{event.image}}>
+      <p>Last update: <br>{{event.lastChange}}</p>
+    {% endfor %}
     <div class="col-6"><img src="../static/images/getupdated.png" class="float-right"></div>
     </div>
-
   </div>
+</div>
 {% endblock %}
