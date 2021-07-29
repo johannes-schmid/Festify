@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container">
-  <div class="row">
+  <div class="row events" style="background-image:url('{{ url_for('static', filename='images/' + 'getupdated.png') }}'">
     <div class="col-6">
-      <a href={{ url_for('subscribe') }}><button type="button"  id='updateme' class="btn btn-lg btn-primary btn-dark">Update Me -></button></a>
+      <a href={{ url_for('subscribe') }}><button type="button"  id='updateme' class="btn btn-lg btn-primary btn-dark">Update Me</button></a>
       <h1 id="title"> Festify</h1>
       <p>Never miss a festival ticket sale.<br></p>
       <p>Never miss the time of your life.</p>
@@ -12,11 +12,10 @@
     </div>
     {% for event in events %}
     <div class="col-2">
-      <img src={{event.image}}>
-      <p>Last update: <br>{{event.lastChange}}</p>
-    {% endfor %}
-    <div class="col-6"><img src="../static/images/getupdated.png" class="float-right"></div>
+      <img src="{{ url_for('static', filename='images/' + event.imagefile) }}">
+      <p>Last update: <br>{{event.lastChange.strftime('%Y-%m-%d')}}</p>
     </div>
+     {% endfor %}
   </div>
 </div>
 {% endblock %}

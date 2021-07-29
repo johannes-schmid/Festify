@@ -21,3 +21,9 @@ background-color: red;
 .navbar {
 padding: 4.5rem 0rem;
 }
+
+.row.events {
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    min-height: 600px;
+}

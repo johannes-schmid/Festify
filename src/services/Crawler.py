@@ -5,43 +5,40 @@ from bs4 import BeautifulSoup
 import datetime
 from google.cloud import datastore
 
+from src.services.Notifier import Notifier
+
 datastore_client = datastore.Client()
 # Creating Crawler Class
 class Crawler:
 
-    # Creating run call that crawls websites
     def run(self):
 
         events = datastore_client.query(kind='events').fetch()
-        changedEvents = []
+        notifier = Notifier()
         for event in events:
-            if 'website' not in event or 'elementClass' not in event or 'htmlContent' not in event:
+            if 'website' not in event or 'htmlContent' not in event:
                 continue
 
             website = event['website']
-            classname = event['elementClass']
-
 
             # Sending request to get all page information
             html = requests.get(website)
             if html.status_code != 200:
                 continue
             # Converting it into a readable html page and stripping all un-necessary elements
-            newContent = BeautifulSoup(html.text, 'html.parser').find(class_=classname).prettify()[:1499]
+
+            htmlContent = BeautifulSoup(html.content, 'html.parser')
+            newContent = ' '.join(htmlContent.find_all(text=True))[:1499]
 
             # Read current file content (we assume it always exists)
             fileContent = event['htmlContent']
 
-            if newContent == fileContent:
-                print('There are no changes my friends!')
-            else:
+            if newContent != fileContent:
                 # Write new HTML to the file
                 event['htmlContent'] = newContent
                 event['lastChange'] = datetime.datetime.now()
                 datastore_client.put(event)
-
-                changedEvents.append(event)
-        return changedEvents
+                notifier.notify(event)
 
     def getEvents(self):
 

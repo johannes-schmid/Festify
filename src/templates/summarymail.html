@@ -32,10 +32,12 @@
         <tr>
           <td>
             </table>
-      <p>There is a new change for Festival:</p>
+      <p>The Festivals are:</p>
+        {% for event in events %}
         <p>{{ event.Name }}</p>
         <p>{{ event.Date}}</p>
-      <p>Check here what changed: {{ event.Website }}</p>
+      <p>Check here what changed: {{ event.Website}}</p>
+    {% endfor %}
 
   </body>
 </html>

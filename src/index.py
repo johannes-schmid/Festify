@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, url_for
 from werkzeug.utils import redirect
 
 from src.services.Crawler import Crawler
+from src.services.Notifier import Notifier
 from src.services.SubscriptionManager import SubscriptionManager
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -32,9 +34,19 @@ def failed():
     return render_template("failed.html")
 
 
-@app.route('/mail')
+@app.route('/summarymail')
 def mail():
-    return render_template("mail.html")
+    crawler = Crawler()
+    events = crawler.getEvents()
+    notifier = Notifier()
+    notifier.sendSummary("hannes322@yahoo.de", events)
+    return "Email send hihi"
+
+@app.route('/runcrawler')
+def crawler():
+    crawler = Crawler()
+    crawler.run()
+    return "Email send hihi"
 
 
 if __name__ == '__main__':
