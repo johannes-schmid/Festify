@@ -3,7 +3,18 @@ import os
 from google.cloud import datastore
 
 
+# Cleaning Up Databases before creating them
+
 datastore_client = datastore.Client()
+query = datastore_client.query(kind='events')
+all_keys = query.fetch()
+datastore_client.delete_multi(all_keys)
+
+datastore_client = datastore.Client()
+query = datastore_client.query(kind='users')
+all_keys = query.fetch()
+datastore_client.delete_multi(all_keys)
+
 
 users = [{
     'firstname': 'Robi',
@@ -17,28 +28,25 @@ users = [{
 }
 ]
 events = [{
-    'name': 'Dekmantel',
+    'name': 'hubi',
     'website': 'https://www.dekmantelfestival.com/en/tickets/',
-    'elementClass': 'tickets',
     'htmlContent': '',
     'lastChange': datetime.datetime.now(),
-    'image': 'src/static/images/Dekmantel.png',
+    'imagefile': 'Dekmantel.png',
 },
     {
     'name': 'Sonar',
     'website': 'https://sonar.es/es/2022/tickets',
-    'elementClass': 'main-container sm-full-width page_tickets lg-margin-top',
     'htmlContent': '',
     'lastChange': datetime.datetime.now(),
-    'image': 'src/static/images/Sonar.png',
+    'imagefile': 'Sonar.png',
     }
 ,   {
     'name': 'Awakenings',
     'website': 'https://sonar.es/es/2022/tickets',
-    'elementClass': 'main-container sm-full-width page_tickets lg-margin-top',
     'htmlContent': '',
     'lastChange': datetime.datetime.now(),
-    'image': '/src/static/images/Awakenings.png',
+    'imagefile': 'Awakenings.png',
     }
 
 ]
@@ -59,9 +67,9 @@ for event in events:
     entity.update({
             'name': event['name'],
             'website': event['website'],
-            'elementClass': event['elementClass'],
             'htmlContent': event['htmlContent'],
             'lastChange': datetime.datetime.now(),
+            'imagefile': event['imagefile'],
     })
     datastore_client.put(entity)
 

@@ -1,10 +1,8 @@
-import pandas as pd
 from google.cloud import datastore
 
 datastore_client = datastore.Client()
 
 class SubscriptionManager:
-
 
     def getSubscribers(self):
         subscribers = datastore_client.query(kind='users').fetch()
