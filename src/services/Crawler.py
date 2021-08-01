@@ -5,9 +5,11 @@ from bs4 import BeautifulSoup
 import datetime
 from google.cloud import datastore
 
-from src.services.Notifier import Notifier
+from .Notifier import Notifier
 
 datastore_client = datastore.Client()
+
+
 # Creating Crawler Class
 class Crawler:
 

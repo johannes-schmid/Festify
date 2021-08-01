@@ -2,13 +2,14 @@ from google.cloud import datastore
 
 datastore_client = datastore.Client()
 
+
 class SubscriptionManager:
 
     def getSubscribers(self):
         subscribers = datastore_client.query(kind='users').fetch()
         return list(subscribers)
 
-    def subscribe(self,firstname, lastname, email):
+    def subscribe(self, firstname, lastname, email):
         user = datastore.Entity(key=datastore_client.key('users'))
         user.update({
             'firstname': firstname,
@@ -16,10 +17,10 @@ class SubscriptionManager:
             'email': email
         })
         query = datastore_client.query(kind='users')
-        existinguser = query.add_filter('email', '=', email).fetch(limit =1)
+        existinguser = query.add_filter('email', '=', email).fetch(limit=1)
 
         if len(list(existinguser)) > 0:
-            raise Exception ('This user has already subscribed to this mailing list')
+            raise Exception('This user has already subscribed to this mailing list')
 
         datastore_client.put(user)
 

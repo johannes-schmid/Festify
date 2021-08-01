@@ -1,0 +1,9 @@
+Flask~=1.1.2
+gunicorn==20.0.4
+requests~=2.25.1
+bs4==
+Werkzeug~=1.0.1
+beautifulsoup4~=4.9.3
+google
+google-cloud-datastore==1.12.0
+Flask-Mail==0.9.1

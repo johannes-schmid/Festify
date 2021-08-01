@@ -2,8 +2,7 @@ import os
 import flask
 from flask import render_template
 from flask_mail import Mail, Message
-from src.services.SubscriptionManager import SubscriptionManager
-
+from .SubscriptionManager import SubscriptionManager
 
 
 class Notifier:
@@ -18,6 +17,7 @@ class Notifier:
         flask.current_app.config['MAIL_USE_TLS'] = False
         flask.current_app.config['MAIL_USE_SSL'] = True
         self.mail = Mail(flask.current_app)
+
     # Starting up server and establish connection
 
     def notify(self, event):
@@ -34,4 +34,3 @@ class Notifier:
         msg = Message('Festival Summery', sender='festify.alerts@gmail.com', recipients=[email])
         msg.html = render_template('summarymail.html', events=events)
         self.mail.send(msg)
-

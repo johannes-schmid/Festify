@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, url_for
 from werkzeug.utils import redirect
 
-from src.services.Crawler import Crawler
-from src.services.Notifier import Notifier
-from src.services.SubscriptionManager import SubscriptionManager
+from services.Crawler import Crawler
+from services.Notifier import Notifier
+from services.SubscriptionManager import SubscriptionManager
 
 app = Flask(__name__)
 
