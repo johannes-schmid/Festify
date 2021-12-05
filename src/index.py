@@ -46,7 +46,7 @@ def mail():
 def crawler():
     crawler = Crawler()
     crawler.run()
-    return "Email send hihi"
+    return "Alive"
 
 
 if __name__ == '__main__':
